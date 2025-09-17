@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Regex Test</title>
+</head>
+<body>
+    <h1>Regex Test for MindmapGenerator</h1>
+    <div id="output"></div>
+    
+    <script>
+        const testContent = `# Project Plan
+
+## Goals
+- Create amazing content
+- Build beautiful mindmaps`;
+
+        const lines = testContent.split('\n');
+        const headings = [];
+        
+        console.log('Test content:', testContent);
+        console.log('Lines:', lines);
+        
+        lines.forEach((line, index) => {
+            console.log(`Line ${index + 1}: "${line}"`);
+            console.log(`Line ${index + 1} length:`, line.length);
+            console.log(`Line ${index + 1} starts with #:`, line.startsWith('#'));
+            
+            const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+            console.log(`Regex match for line ${index + 1}:`, headingMatch);
+            
+            if (headingMatch) {
+                const level = headingMatch[1].length;
+                const text = headingMatch[2].trim();
+                
+                headings.push({
+                    level,
+                    text,
+                    lineNumber: index + 1
+                });
+                console.log(`Found heading level ${level}: "${text}"`);
+            }
+        });
+        
+        console.log('Total headings found:', headings.length);
+        console.log('Headings:', headings);
+        
+        document.getElementById('output').innerHTML = `
+            <h2>Results:</h2>
+            <p>Total headings: ${headings.length}</p>
+            <ul>
+                ${headings.map(h => `<li>Level ${h.level}: ${h.text} (line ${h.lineNumber})</li>`).join('')}
+            </ul>
+        `;
+    </script>
+</body>
+</html>
